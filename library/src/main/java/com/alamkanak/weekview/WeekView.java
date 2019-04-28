@@ -157,7 +157,7 @@ public class WeekView extends View {
     private float mXScrollingSpeed = 1f;
     private Calendar mScrollToDay = null;
     private double mScrollToHour = -1;
-    private int mEventCornerRadius = 0;
+    public int mEventCornerRadius = 0;
     private boolean mShowDistinctWeekendColor = false;
     private boolean mShowNowLine = false;
     private boolean mShowDistinctPastFutureColor = false;
@@ -1112,7 +1112,8 @@ public class WeekView extends View {
                             topToUse = mHourHeight * getPassedMinutesInDay(mMinTime, 0) / 60 + getEventsTop();
 
                         if (!mNewEventIdentifier.equals(mEventRects.get(i).event.getIdentifier())) {
-                            drawEventTitle(mEventRects.get(i).event, mEventRects.get(i).rectF, canvas, topToUse, left);
+                            drawEventTitle(mEventRects.get(i).event, mEventRects.get(i).rectF, canvas, topToUse,
+                                    mEventRects.get(i).event.mMarker.getType() == EventMarker.MarkerType.NONE ? left : left + mEventRects.get(i).event.mMarker.getWidth());
                         } else
                             drawEmptyImage(mEventRects.get(i).event, mEventRects.get(i).rectF, canvas, topToUse, left);
 
@@ -1250,7 +1251,7 @@ public class WeekView extends View {
      * stored in "originalEvent". But the event that corresponds to rectangle the rectangle
      * instance will be stored in "event".
      */
-    private class EventRect {
+    public class EventRect {
         public WeekViewEvent event;
         public WeekViewEvent originalEvent;
         public RectF rectF;
@@ -1278,21 +1279,7 @@ public class WeekView extends View {
         }
 
         public void drawMarker(Canvas canvas) {
-            Paint paint = new Paint();
-            paint.setColor(Color.parseColor("#FF00FF"));
-            paint.setShader(this.event.getShader());
-
-            float markerWidth = 15;
-            if (this.event.mMarker == WeekViewEvent.Marker.FILLED) {
-                canvas.drawRoundRect(new RectF(rectF.left, rectF.top, rectF.left + markerWidth, rectF.bottom), mEventCornerRadius, mEventCornerRadius, paint);
-            } else if (this.event.mMarker == WeekViewEvent.Marker.DASHED) {
-                int dashHeight = 30;
-                int dashSpacing = 15;
-                for (float y = rectF.top; y < rectF.bottom; y += dashHeight + dashSpacing) {
-                    RectF tmp = new RectF(rectF.left, y, rectF.left + markerWidth, y + dashHeight > rectF.bottom ? rectF.bottom : y + dashHeight);
-                    canvas.drawRoundRect(tmp, mEventCornerRadius, mEventCornerRadius, paint);
-                }
-            }
+            this.event.mMarker.draw(canvas, this);
         }
     }
 
