@@ -3,6 +3,7 @@ package com.alamkanak.weekview.sample;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Layout;
 
 import com.alamkanak.weekview.EventMarker;
 import com.alamkanak.weekview.TextColorPicker;
@@ -86,7 +87,7 @@ public class BasicActivity extends BaseActivity {
         endTime.add(Calendar.HOUR_OF_DAY, 2);
         endTime.set(Calendar.MONTH, newMonth - 1);
         EventMarker marker_1 = new EventMarker(Color.parseColor("#00FFFF"), EventMarker.MarkerType.DASHED);
-        event = new WeekViewEvent(2, getEventTitle(startTime), startTime, endTime, marker_1);
+        event = new WeekViewEvent(2,"בליה" + "\n", "מדינת בליה", startTime, endTime, marker_1, Layout.Alignment.ALIGN_OPPOSITE);
         event.setColor(getResources().getColor(R.color.event_color_04));
         events.add(event);
 
@@ -100,7 +101,8 @@ public class BasicActivity extends BaseActivity {
         endTime.add(Calendar.HOUR_OF_DAY, 3);
         endTime.set(Calendar.MONTH, newMonth - 1);
         EventMarker marker_2 = new EventMarker(Color.parseColor("#0F0F0F"), EventMarker.MarkerType.FILLED);
-        event = new WeekViewEvent(3, "Bleh\nבליה", startTime, endTime, marker_2);
+//        event = new WeekViewEvent(3, "Bleh", startTime, endTime, marker_2, Layout.Alignment.ALIGN_RIGHT);
+        event = new WeekViewEvent(3, "Bleh", "\nBleh town", startTime, endTime, marker_2, Layout.Alignment.ALIGN_OPPOSITE);
         event.setColor(getResources().getColor(R.color.event_color_03));
         events.add(event);
 
