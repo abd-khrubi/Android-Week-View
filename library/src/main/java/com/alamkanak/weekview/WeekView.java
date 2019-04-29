@@ -1187,6 +1187,7 @@ public class WeekView extends View {
         if (!TextUtils.isEmpty(event.getName())) {
             bob.append(event.getName());
             bob.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, bob.length(), 0);
+
         }
         // Prepare the location of the event.
         if (!TextUtils.isEmpty(event.getLocation())) {
@@ -1203,7 +1204,9 @@ public class WeekView extends View {
             mEventTextPaint.setColor(textColorPicker.getTextColor(event));
         }
         // Get text dimensions.
-        StaticLayout textLayout = new StaticLayout(bob, mEventTextPaint, availableWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        StaticLayout textLayout = new StaticLayout(bob, mEventTextPaint, availableWidth,
+                event.mTextAlignment, // TODO mine
+                1.0f, 0.0f, false);
         if (textLayout.getLineCount() > 0) {
             int lineHeight = textLayout.getHeight() / textLayout.getLineCount();
 
@@ -1213,7 +1216,9 @@ public class WeekView extends View {
                 do {
                     // Ellipsize text to fit into event rect.
                     if (!mNewEventIdentifier.equals(event.getIdentifier()))
-                        textLayout = new StaticLayout(TextUtils.ellipsize(bob, mEventTextPaint, availableLineCount * availableWidth, TextUtils.TruncateAt.END), mEventTextPaint, (int) (rect.right - originalLeft - mEventPadding * 2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+                        textLayout = new StaticLayout(TextUtils.ellipsize(bob, mEventTextPaint, availableLineCount * availableWidth, TextUtils.TruncateAt.END), mEventTextPaint, (int) (rect.right - originalLeft - mEventPadding * 2),
+                                event.mTextAlignment, // TODO mine
+                                1.0f, 0.0f, false);
 
                     // Reduce line count.
                     availableLineCount--;

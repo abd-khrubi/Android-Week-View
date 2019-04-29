@@ -2,6 +2,7 @@ package com.alamkanak.weekview;
 
 import android.graphics.Shader;
 import android.support.annotation.ColorInt;
+import android.text.Layout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +32,7 @@ public class WeekViewEvent {
     private Shader mShader;
 
     EventMarker mMarker;
+    Layout.Alignment mTextAlignment;
 
 
     public WeekViewEvent() {
@@ -53,7 +55,8 @@ public class WeekViewEvent {
      * @param endHour     Hour (in 24-hour format) when the event ends.
      * @param endMinute   Minute when the event ends.
      */
-    public WeekViewEvent(String id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute, EventMarker marker) {
+    public WeekViewEvent(String id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute,
+                         EventMarker marker, Layout.Alignment textAlignment) {
         this.mId = id;
 
         this.mStartTime = Calendar.getInstance();
@@ -73,10 +76,11 @@ public class WeekViewEvent {
         this.mName = name;
 
         this.mMarker = marker;
+        this.mTextAlignment = textAlignment;
     }
 
     public WeekViewEvent(String id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) {
-        this(id, name, startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute, EventMarker.NO_MARKER);
+        this(id, name, startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
     }
 
 
@@ -97,25 +101,28 @@ public class WeekViewEvent {
      * @param endMinute   Minute when the event ends.
      */
     @Deprecated
-    public WeekViewEvent(long id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute, EventMarker marker) {
-        this(String.valueOf(id), name, startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute, marker);
-    }
-    public WeekViewEvent(long id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) {
-        this(id, name, startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute, EventMarker.NO_MARKER);
+    public WeekViewEvent(long id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute,
+                         EventMarker marker, Layout.Alignment textAlignment) {
+        this(String.valueOf(id), name, startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute, marker, textAlignment);
     }
 
-        /**
-         * Initializes the event for week view.
-         *
-         * @param id        The id of the event as String.
-         * @param name      Name of the event.
-         * @param location  The location of the event.
-         * @param startTime The time when the event starts.
-         * @param endTime   The time when the event ends.
-         * @param allDay    Is the event an all day event.
-         * @param shader    the Shader of the event rectangle
-         */
-    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, Shader shader, EventMarker marker) {
+    public WeekViewEvent(long id, String name, int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) {
+        this(id, name, startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
+    }
+
+    /**
+     * Initializes the event for week view.
+     *
+     * @param id        The id of the event as String.
+     * @param name      Name of the event.
+     * @param location  The location of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime   The time when the event ends.
+     * @param allDay    Is the event an all day event.
+     * @param shader    the Shader of the event rectangle
+     */
+    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, Shader shader,
+                         EventMarker marker, Layout.Alignment textAlignment) {
         this.mId = id;
         this.mName = name;
         this.mLocation = location;
@@ -124,10 +131,11 @@ public class WeekViewEvent {
         this.mAllDay = allDay;
         this.mShader = shader;
         this.mMarker = marker;
+        this.mTextAlignment = textAlignment;
     }
 
     public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, Shader shader) {
-        this(id, name, location, startTime, endTime, allDay, shader, EventMarker.NO_MARKER);
+        this(id, name, location, startTime, endTime, allDay, shader, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
     }
 
     /**
@@ -142,108 +150,123 @@ public class WeekViewEvent {
      * @param shader    the Shader of the event rectangle
      */
     @Deprecated
-    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, Shader shader, EventMarker marker) {
-        this(String.valueOf(id), name, location, startTime, endTime, allDay, shader, marker);
+    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, Shader shader,
+                         EventMarker marker, Layout.Alignment textAlignment) {
+        this(String.valueOf(id), name, location, startTime, endTime, allDay, shader, marker, textAlignment);
     }
+
     public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, Shader shader) {
-        this(id, name, location, startTime, endTime, allDay, shader, EventMarker.NO_MARKER);
+        this(id, name, location, startTime, endTime, allDay, shader, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
     }
 
-        /**
-         * Initializes the event for week view.
-         *
-         * @param id        The id of the event as String.
-         * @param name      Name of the event.
-         * @param location  The location of the event.
-         * @param startTime The time when the event starts.
-         * @param endTime   The time when the event ends.
-         * @param allDay    Is the event an all day event
-         */
-    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, EventMarker marker) {
-        this(id, name, location, startTime, endTime, allDay, null, marker);
+    /**
+     * Initializes the event for week view.
+     *
+     * @param id        The id of the event as String.
+     * @param name      Name of the event.
+     * @param location  The location of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime   The time when the event ends.
+     * @param allDay    Is the event an all day event
+     */
+    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, EventMarker marker, Layout.Alignment textAlignment) {
+        this(id, name, location, startTime, endTime, allDay, null, marker, textAlignment);
     }
+
     public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay) {
-        this(id, name, location, startTime, endTime, allDay, EventMarker.NO_MARKER);
-    }
-        /**
-         * Initializes the event for week view.
-         *
-         * @param id        The id of the event.
-         * @param name      Name of the event.
-         * @param location  The location of the event.
-         * @param startTime The time when the event starts.
-         * @param endTime   The time when the event ends.
-         * @param allDay    Is the event an all day event
-         */
-    @Deprecated
-    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay, EventMarker marker) {
-        this(id, name, location, startTime, endTime, allDay, null, marker);
-    }
-    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay) {
-        this(id, name, location, startTime, endTime, allDay, EventMarker.NO_MARKER);
-    }
-        /**
-         * Initializes the event for week view.
-         *
-         * @param id        The id of the event as String.
-         * @param name      Name of the event.
-         * @param location  The location of the event.
-         * @param startTime The time when the event starts.
-         * @param endTime   The time when the event ends.
-         */
-    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, EventMarker marker) {
-        this(id, name, location, startTime, endTime, false, marker);
-    }
-    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime) {
-        this(id, name, location, startTime, endTime, EventMarker.NO_MARKER);
-    }
-        /**
-         * Initializes the event for week view.
-         *
-         * @param id        The id of the event.
-         * @param name      Name of the event.
-         * @param location  The location of the event.
-         * @param startTime The time when the event starts.
-         * @param endTime   The time when the event ends.
-         */
-    @Deprecated
-    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, EventMarker marker) {
-        this(id, name, location, startTime, endTime, false, marker);
-    }
-    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime) {
-        this(id, name, location, startTime, endTime, EventMarker.NO_MARKER);
+        this(id, name, location, startTime, endTime, allDay, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
     }
 
-        /**
-         * Initializes the event for week view.
-         *
-         * @param id        The id of the event specified as String.
-         * @param name      Name of the event.
-         * @param startTime The time when the event starts.
-         * @param endTime   The time when the event ends.
-         */
-    public WeekViewEvent(String id, String name, Calendar startTime, Calendar endTime, EventMarker marker) {
-        this(id, name, null, startTime, endTime, marker);
-    }
-    public WeekViewEvent(String id, String name, Calendar startTime, Calendar endTime) {
-        this(id, name, startTime, endTime, EventMarker.NO_MARKER);
-    }
-        /**
-         * Initializes the event for week view.
-         *
-         * @param id        The id of the event.
-         * @param name      Name of the event.
-         * @param startTime The time when the event starts.
-         * @param endTime   The time when the event ends.
-         */
+    /**
+     * Initializes the event for week view.
+     *
+     * @param id        The id of the event.
+     * @param name      Name of the event.
+     * @param location  The location of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime   The time when the event ends.
+     * @param allDay    Is the event an all day event
+     */
     @Deprecated
-    public WeekViewEvent(long id, String name, Calendar startTime, Calendar endTime, EventMarker marker) {
-        this(id, name, null, startTime, endTime, marker);
+    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay,
+                         EventMarker marker, Layout.Alignment textAlignment) {
+        this(id, name, location, startTime, endTime, allDay, null, marker, textAlignment);
     }
+
+    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay) {
+        this(id, name, location, startTime, endTime, allDay, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
+    }
+
+    /**
+     * Initializes the event for week view.
+     *
+     * @param id        The id of the event as String.
+     * @param name      Name of the event.
+     * @param location  The location of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime   The time when the event ends.
+     */
+    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime, EventMarker marker, Layout.Alignment textAlignment) {
+        this(id, name, location, startTime, endTime, false, marker, textAlignment);
+    }
+
+    public WeekViewEvent(String id, String name, String location, Calendar startTime, Calendar endTime) {
+        this(id, name, location, startTime, endTime, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
+    }
+
+    /**
+     * Initializes the event for week view.
+     *
+     * @param id        The id of the event.
+     * @param name      Name of the event.
+     * @param location  The location of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime   The time when the event ends.
+     */
+    @Deprecated
+    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, EventMarker marker, Layout.Alignment textAlignment) {
+        this(id, name, location, startTime, endTime, false, marker, textAlignment);
+    }
+
+    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime) {
+        this(id, name, location, startTime, endTime, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
+    }
+
+    /**
+     * Initializes the event for week view.
+     *
+     * @param id        The id of the event specified as String.
+     * @param name      Name of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime   The time when the event ends.
+     */
+    public WeekViewEvent(String id, String name, Calendar startTime, Calendar endTime,
+                         EventMarker marker, Layout.Alignment textAlignment) {
+        this(id, name, null, startTime, endTime, marker, textAlignment);
+    }
+
+    public WeekViewEvent(String id, String name, Calendar startTime, Calendar endTime) {
+        this(id, name, startTime, endTime, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
+    }
+
+    /**
+     * Initializes the event for week view.
+     *
+     * @param id        The id of the event.
+     * @param name      Name of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime   The time when the event ends.
+     */
+    @Deprecated
+    public WeekViewEvent(long id, String name, Calendar startTime, Calendar endTime, EventMarker marker, Layout.Alignment textAlignment) {
+        this(id, name, null, startTime, endTime, marker, textAlignment);
+    }
+
     public WeekViewEvent(long id, String name, Calendar startTime, Calendar endTime) {
-        this(id, name, startTime, endTime, EventMarker.NO_MARKER);
+        this(id, name, startTime, endTime, EventMarker.NO_MARKER, Layout.Alignment.ALIGN_NORMAL);
     }
-        public Calendar getStartTime() {
+
+    public Calendar getStartTime() {
         return mStartTime;
     }
 
